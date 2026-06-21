@@ -23,6 +23,7 @@
             <h1>รายการจองโต๊ะ (Daily Queue)</h1>
             <div class="controls">
                 <input type="date" id="filterDate">
+                <button class="btn-refresh" id="btnShowAll" style="background-color: var(--primary-color);">📅 คิวทั้งหมด</button>
                 <button class="btn-refresh" id="btnRefresh">🔄 โหลดข้อมูลใหม่</button>
             </div>
         </div>
@@ -32,6 +33,7 @@
                 <thead>
                     <tr>
                         <th>Ref ID</th>
+                        <th>วันที่จอง</th>
                         <th>รอบเวลา</th>
                         <th>ข้อมูลลูกค้า</th>
                         <th>จำนวนคน</th>

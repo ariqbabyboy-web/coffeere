@@ -8,6 +8,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // DOM Elements
 const dateFilter = document.getElementById('filterDate');
 const btnRefresh = document.getElementById('btnRefresh');
+const btnShowAll = document.getElementById('btnShowAll');
 const queueTableBody = document.getElementById('queueTableBody');
 
 // Set default date to today (Local Timezone)
@@ -22,11 +23,20 @@ async function loadQueue() {
 
     queueTableBody.innerHTML = `<tr><td colspan="7" class="empty-state">กำลังโหลดข้อมูล...</td></tr>`;
 
-    // Fetch reservations for the selected date, ordered by time slot
-    const { data: reservations, error } = await supabase
-        .from('reservations')
-        .select('*')
-        .eq('booking_date', selectedDate)
+    let query = supabase.from('reservations').select('*');
+
+    if (selectedDate) {
+        query = query.eq('booking_date', selectedDate);
+    } else {
+        // If no date selected, fetch upcoming bookings from today onwards
+        const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+        const todayStr = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
+        query = query.gte('booking_date', todayStr);
+    }
+
+    // Fetch reservations ordered by date and time slot
+    const { data: reservations, error } = await query
+        .order('booking_date', { ascending: true })
         .order('time_slot', { ascending: true })
         .order('created_at', { ascending: true });
 
@@ -37,7 +47,7 @@ async function loadQueue() {
     }
 
     if (!reservations || reservations.length === 0) {
-        queueTableBody.innerHTML = `<tr><td colspan="7" class="empty-state">ไม่มีคิวจองสำหรับวันที่เลือก</td></tr>`;
+        queueTableBody.innerHTML = `<tr><td colspan="8" class="empty-state">ไม่มีคิวจองสำหรับเงื่อนไขที่เลือก</td></tr>`;
         return;
     }
 
@@ -68,8 +78,13 @@ function renderTable(reservations) {
             actionButtons = `<span style="color: #9e9e9e; font-size: 0.85rem;">(อัปเดตแล้ว)</span>`;
         }
 
+        // Format Date (e.g. 2026-06-24 -> 24/06/2026)
+        const dateParts = res.booking_date.split('-');
+        const formattedDate = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : res.booking_date;
+
         tr.innerHTML = `
             <td><strong>${refId}</strong></td>
+            <td><span style="color: var(--primary-color); font-weight: 500;">${formattedDate}</span></td>
             <td>${res.time_slot}</td>
             <td>
                 <strong>${res.customer_name}</strong><br>
@@ -106,6 +121,10 @@ window.updateStatus = async function(id, newStatus) {
 // Event Listeners
 dateFilter.addEventListener('change', loadQueue);
 btnRefresh.addEventListener('click', loadQueue);
+btnShowAll.addEventListener('click', () => {
+    dateFilter.value = ''; // Clear date to trigger "Show All" logic
+    loadQueue();
+});
 
 // Initial Load
 document.addEventListener('DOMContentLoaded', loadQueue);
