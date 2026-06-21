@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew & Brown | จองโต๊ะล่วงหน้า</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Brew & Brown</div>
+        </div>
+    </nav>
+
+    <main class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>จองโต๊ะล่วงหน้า<br>รับประกันที่นั่งสุดชิล</h1>
+                <p>พักผ่อนและดื่มด่ำกับกาแฟแก้วโปรดในบรรยากาศพรีเมียม</p>
+            </div>
+            
+            <div class="booking-card">
+                <h2>จองโต๊ะ (Book a Table)</h2>
+                <form id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">วันที่ (Date)</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="time">รอบเวลา (Time Slot)</label>
+                            <select id="time" required>
+                                <option value="" disabled selected>เลือกรอบเวลา</option>
+                                <option value="10:00 - 11:30">10:00 - 11:30 น.</option>
+                                <option value="11:30 - 13:00">11:30 - 13:00 น.</option>
+                                <option value="13:00 - 14:30">13:00 - 14:30 น.</option>
+                                <option value="14:30 - 16:00">14:30 - 16:00 น.</option>
+                                <option value="16:00 - 17:30">16:00 - 17:30 น.</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guests">จำนวนคน (Guests)</label>
+                        <select id="guests" required>
+                            <option value="1">1 ท่าน</option>
+                            <option value="2" selected>2 ท่าน</option>
+                            <option value="3">3 ท่าน</option>
+                            <option value="4">4 ท่าน</option>
+                            <option value="5">5 ท่าน</option>
+                            <option value="6">6 ท่านขึ้นไป</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">ชื่อผู้จอง (Name)</label>
+                        <input type="text" id="name" placeholder="ชื่อ-นามสกุล" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">เบอร์โทรศัพท์ (Phone)</label>
+                        <input type="tel" id="phone" placeholder="08X-XXX-XXXX" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">หมายเหตุ (Special Requests)</label>
+                        <textarea id="notes" rows="3" placeholder="ตัวอย่าง: ต้องการโต๊ะริมหน้าต่าง, เอาเก้าอี้เด็ก"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">ยืนยันการจองโต๊ะ</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Brew & Brown Coffee Shop. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        // Initialize Supabase
+        const supabaseUrl = 'https://odqyebcueuzwwibjkxvc.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kcXllYmN1ZXV6d3dpYmpreHZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMDgwMDgsImV4cCI6MjA5NzU4NDAwOH0.h7wKTuKBsv6LDgo-RoUGeX2Cys-5e4JZ8x6hL-ObeVQ';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').setAttribute('min', today);
+
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // ป้องกันการรีเฟรชหน้าเว็บและการส่งแบบ GET
+            
+            const btn = document.querySelector('.btn-submit');
+            const originalText = btn.innerText;
+            btn.innerText = 'กำลังประมวลผล...';
+            btn.disabled = true;
+
+            const bookingData = {
+                customer_name: document.getElementById('name').value,
+                phone_number: document.getElementById('phone').value,
+                booking_date: document.getElementById('date').value,
+                time_slot: document.getElementById('time').value,
+                pax: parseInt(document.getElementById('guests').value),
+                notes: document.getElementById('notes').value || null
+            };
+
+            const { data, error } = await supabase
+                .from('reservations')
+                .insert([bookingData])
+                .select();
+
+            btn.innerText = originalText;
+            btn.disabled = false;
+
+            if (error) {
+                console.error('Error inserting data:', error);
+                alert("เกิดข้อผิดพลาดในการจอง กรุณาลองใหม่อีกครั้ง (" + error.message + ")");
+            } else if (data && data.length > 0) {
+                const refId = data[0].id.substring(0, 8).toUpperCase();
+                alert(`จองโต๊ะสำเร็จ! \nเลขอ้างอิงของคุณคือ: ${refId} \n(กรุณาบันทึกเลขอ้างอิงนี้ไว้เพื่อแสดงต่อพนักงาน)`);
+                document.getElementById('bookingForm').reset();
+            }
+        });
+    </script>
+</body>
+</html>
