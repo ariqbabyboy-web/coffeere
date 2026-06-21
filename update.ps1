@@ -1,4 +1,4 @@
 $git = ".\mingit\cmd\git.exe"
 & $git add -A
-& $git commit -m "Fix Vercel deployment: Remove server.js and test scripts to force static site build"
+& $git commit -m "Fix Vercel build: Remove package.json to disable custom build step"
 & $git push origin main
