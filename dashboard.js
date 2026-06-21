@@ -10,8 +10,9 @@ const dateFilter = document.getElementById('filterDate');
 const btnRefresh = document.getElementById('btnRefresh');
 const queueTableBody = document.getElementById('queueTableBody');
 
-// Set default date to today
-const today = new Date().toISOString().split('T')[0];
+// Set default date to today (Local Timezone)
+const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+const today = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
 dateFilter.value = today;
 
 // Fetch and display queue

@@ -90,8 +90,9 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kcXllYmN1ZXV6d3dpYmpreHZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMDgwMDgsImV4cCI6MjA5NzU4NDAwOH0.h7wKTuKBsv6LDgo-RoUGeX2Cys-5e4JZ8x6hL-ObeVQ';
         const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
+        // Set minimum date to today (Local Timezone)
+        const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+        const today = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
         document.getElementById('date').setAttribute('min', today);
 
         document.getElementById('bookingForm').addEventListener('submit', async function(e) {
