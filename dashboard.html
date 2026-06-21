@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard | Brew & Brown</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- โหลดสไตล์พื้นฐานของร้านและสไตล์เฉพาะสำหรับ Dashboard -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Brew & Brown <span style="font-size: 1rem; color: #757575;">| Staff Dashboard</span></div>
+        </div>
+    </nav>
+
+    <main class="dashboard-section">
+        <div class="dashboard-header">
+            <h1>รายการจองโต๊ะ (Daily Queue)</h1>
+            <div class="controls">
+                <input type="date" id="filterDate">
+                <button class="btn-refresh" id="btnRefresh">🔄 โหลดข้อมูลใหม่</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ref ID</th>
+                        <th>รอบเวลา</th>
+                        <th>ข้อมูลลูกค้า</th>
+                        <th>จำนวนคน</th>
+                        <th>หมายเหตุ</th>
+                        <th>สถานะ</th>
+                        <th>จัดการคิว</th>
+                    </tr>
+                </thead>
+                <tbody id="queueTableBody">
+                    <!-- ข้อมูลจะถูกโหลดมาใส่ที่นี่ผ่าน JS -->
+                    <tr>
+                        <td colspan="7" class="empty-state">กำลังโหลดข้อมูล...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Brew & Brown Coffee Shop. Internal Use Only.</p>
+    </footer>
+
+    <!-- Load Supabase JS & Custom Script -->
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>

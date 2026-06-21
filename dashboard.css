@@ -1,0 +1,177 @@
+/* dashboard.css - สำหรับระบบหลังบ้านของร้านกาแฟ */
+
+.dashboard-section {
+    padding: 100px 2rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.dashboard-header h1 {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.controls input[type="date"] {
+    padding: 0.8rem 1.2rem;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: var(--white);
+    color: var(--text-dark);
+}
+
+.btn-refresh {
+    background-color: var(--text-dark);
+    color: var(--white);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-refresh:hover {
+    background-color: #000;
+}
+
+/* Table Card */
+.table-container {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(140, 92, 56, 0.08);
+    overflow-x: auto;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+thead {
+    background-color: #f7f3ed; /* soft brown tint */
+}
+
+th, td {
+    padding: 1.2rem;
+    border-bottom: 1px solid #f0e9e1;
+}
+
+th {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-family: 'Outfit', 'Prompt', sans-serif;
+    white-space: nowrap;
+}
+
+tbody tr:hover {
+    background-color: #faf8f5;
+}
+
+/* Status Badges */
+.status {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+}
+
+.status.booked {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.status.arrived {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status.no-show, .status.no-show {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.status.cancelled {
+    background-color: #eeeeee;
+    color: #616161;
+}
+
+/* Actions */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-action.arrive {
+    background-color: #2e7d32;
+    color: white;
+}
+.btn-action.arrive:hover { background-color: #1b5e20; }
+
+.btn-action.noshow {
+    background-color: #c62828;
+    color: white;
+}
+.btn-action.noshow:hover { background-color: #b71c1c; }
+
+.btn-action.cancel {
+    background-color: #9e9e9e;
+    color: white;
+}
+.btn-action.cancel:hover { background-color: #757575; }
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #757575;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .controls {
+        width: 100%;
+    }
+    
+    .controls input[type="date"] {
+        flex-grow: 1;
+    }
+}
