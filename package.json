@@ -1,0 +1,12 @@
+{
+  "name": "coffeere-reservation",
+  "version": "1.0.0",
+  "description": "Coffee Shop Reservation System",
+  "scripts": {
+    "build": "echo \"This is a static site. No build required.\" && exit 0",
+    "start": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
