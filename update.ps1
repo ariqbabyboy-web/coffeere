@@ -1,4 +1,4 @@
 $git = ".\mingit\cmd\git.exe"
 & $git add -A
-& $git commit -m "Fix Vercel build: Remove package.json to disable custom build step"
+& $git commit -m "UI: Add dashboard button to navbar"
 & $git push origin main

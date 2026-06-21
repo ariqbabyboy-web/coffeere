@@ -42,8 +42,24 @@ h1, h2, h3, .logo {
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
+}
+
+.btn-outline {
+    text-decoration: none;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
 }
 
 .logo {
